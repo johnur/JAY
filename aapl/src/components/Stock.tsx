@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import Highcharts, { dateFormat } from "highcharts";
+import Highcharts, { dateFormat } from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
+import "../style/stock.css"
+
 
 
 const Stock = () => {
-  
+
   const useEffectBlocker = ''
   const [state, setState] = useState({ data: "" });
-   
-  const jsonData : any = "Time Series (Daily)";
+
+  const jsonData: any = "Time Series (Daily)";
   const getDateArray = () => {
     if (state.data) {
       return Object.entries(state.data[jsonData]).map((date) =>
@@ -20,9 +22,9 @@ const Stock = () => {
 
   const getPriceArray = () => {
     if (state.data) {
-      const jsonData : any = "Time Series (Daily)";
+      const jsonData: any = "Time Series (Daily)";
 
-      const jsonStock : any = "4. close";
+      const jsonStock: any = "4. close";
       // let jotain : number = (jsonStock as number)
       return Object.entries(state.data[jsonData]).map((date) =>
         parseFloat(date[1][jsonStock])
@@ -33,21 +35,30 @@ const Stock = () => {
   const dateArray = getDateArray();
   const priceArray = getPriceArray();
 
+
+
+  
   const options = {
-    chart: {
-      type: "spline",
-    },
     xAxis: {
       categories: dateArray,
+      style: {
+        color: '#efefef'
+      }
     },
+   
     title: {
-      text: "Stock prices",
+      text: "AAPL Stock Price",
+      style: {
+        color: '#efefef'
+      }
     },
+    
     series:
-      {
-        text: "Close",
-        data: priceArray,
-      },
+    [{
+      name: "AAPL",
+      data: priceArray,
+      color: 'tomato'
+    }],
   };
 
   function callAPI() {
@@ -62,8 +73,12 @@ const Stock = () => {
   }, [useEffectBlocker]);
 
   return (
-    <div className="App">
-      <HighchartsReact highcharts={Highcharts} options={options} />
+    <div className="stock">
+     <HighchartsReact
+      highcharts={Highcharts}
+      constructorType={'stockChart'}
+      options={options}
+    />
     </div>
   );
 };
